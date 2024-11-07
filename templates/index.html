@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diffie-Hellman Visualization</title>
+    <link rel="stylesheet" href="./static/styles.css">
+</head>
+<body>
+    <div id="alice-section" class="participant">
+        <h3>Alice</h3>
+        <div id="alice-content">
+            <p>Choose values for g and p:</p>
+            <input type="number" id="g" placeholder="Base g">
+            <input type="number" id="p" placeholder="Modulus p">
+            <button onclick="sendToBob()">Send to Bob</button>
+        </div>
+    </div>
+
+    <div id="bob-section" class="participant">
+        <h3>Bob</h3>
+        <div id="bob-content">
+            <p id="bob-input" style="display: none;">
+            </p>
+        </div>
+    </div>
+
+    <div id="eve-section" class="participant">
+        <h3>Eve's Observations</h3>
+        <div id="eve-observations">
+            <p>Eve is observing the communication...</p>
+        </div>
+    </div>
+
+    <div id="match-result">
+    </div>
+
+    <script src="./static/script.js"></script>
+</body>
+</html>
