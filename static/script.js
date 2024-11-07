@@ -9,17 +9,18 @@ function sendToBob() {
         alert("Please enter valid integers for g and p.");
         return;
     }
-    document.getElementById('bob-content').innerHTML = `
-        <p>Hi Bob, let's use g = ${g} and p = ${p}.</p>
+    // document.getElementById('alice-content').innerHTML += `<p>Alice sends Bob g = ${g} and p = ${p}.</p>`;
+    document.getElementById('bob-content').innerHTML += `
+        <p>From Alice: Hey Bob, let's use g = ${g} and p = ${p}.</p>
         <button onclick="acceptGP()">Accept</button>
     `;
-    document.getElementById('eve-observations').innerHTML += `<p>Alice sends Bob - g = ${g}, p = ${p}</p>`;
+    document.getElementById('eve-observations').innerHTML += `<p>Alice sends Bob g = ${g}, p = ${p}</p>`;
 }
 
 // Bob accepts g and p
 function acceptGP() {
-    document.getElementById('bob-content').innerHTML = `<p>Bob has accepted the values g = ${g} and p = ${p}.</p>`;
-    document.getElementById('alice-content').innerHTML = `
+    document.getElementById('alice-content').innerHTML += `<p>Bob has accepted g = ${g} and p = ${p}.</p>`;
+    document.getElementById('alice-content').innerHTML += `
         <p>Choose an exponent a:</p>
         <input type="number" id="a" placeholder="Alice's exponent a">
         <button onclick="calculateA()">Calculate A</button>
@@ -39,11 +40,11 @@ function calculateA() {
         return;
     }
     A = Math.pow(g, a) % p;
-    document.getElementById('alice-content').innerHTML = `
-        <p>Alice calculates A = ${A}</p>
+    document.getElementById('alice-content').innerHTML += `
+        <p>You chose exponent a = ${a}.</p>
         <button onclick="sendAToBob()">Send A to Bob</button>
     `;
-    document.getElementById('eve-observations').innerHTML += `<p>Alice sends A = ${A}</p>`;
+    // document.getElementById('eve-observations').innerHTML += `<p>Alice sends A = ${A}</p>`;
 }
 
 // Calculate B for Bob
@@ -54,36 +55,38 @@ function calculateB() {
         return;
     }
     B = Math.pow(g, b) % p;
-    document.getElementById('bob-content').innerHTML = `
-        <p>Bob calculates B = ${B}</p>
+    document.getElementById('bob-content').innerHTML += `
+        <p>You chose exponent b = ${b}.</p>
         <button onclick="sendBToAlice()">Send B to Alice</button>
     `;
-    document.getElementById('eve-observations').innerHTML += `<p>Bob sends B = ${B}</p>`;
+    // document.getElementById('eve-observations').innerHTML += `<p>Bob sends B = ${B}</p>`;
 }
 
 // Send A to Bob and B to Alice
 function sendAToBob() {
-    document.getElementById('bob-content').innerHTML += `<p>Bob receives A = ${A}</p>`;
+    document.getElementById('bob-content').innerHTML += `<p>From Alice: Here is my A = ${A}.</p>`;
+    document.getElementById('eve-observations').innerHTML += `<p>Alice sends A = ${A}</p>`;
     checkForKeyCalculation();
 }
 
 function sendBToAlice() {
-    document.getElementById('alice-content').innerHTML += `<p>Alice receives B = ${B}</p>`;
+    document.getElementById('alice-content').innerHTML += `<p>From Bob: Here is my B = ${B}.</p>`;
+    document.getElementById('eve-observations').innerHTML += `<p>Bob sends B = ${B}</p>`;
     checkForKeyCalculation();
 }
 
-// Show button to calculate shared secret key 
+// Show button to calculate shared secret key
 function checkForKeyCalculation() {
     if (A && B) {
         if (!document.getElementById('alice-calculate-key')) {
             document.getElementById('alice-content').innerHTML += `
-                <button id="alice-calculate-key" onclick="calculateAliceSecret()">Calculate Alice's Secret Key</button>
+                <button id="alice-calculate-key" onclick="calculateAliceSecret()">Calculate shared secret key</button>
                 <p id="alice-secret"></p>
             `;
         }
         if (!document.getElementById('bob-calculate-key')) {
             document.getElementById('bob-content').innerHTML += `
-                <button id="bob-calculate-key" onclick="calculateBobSecret()">Calculate Bob's Secret Key</button>
+                <button id="bob-calculate-key" onclick="calculateBobSecret()">Calculate shared secret key</button>
                 <p id="bob-secret"></p>
             `;
         }
@@ -94,7 +97,7 @@ function checkForKeyCalculation() {
 function calculateAliceSecret() {
     aliceSecret = Math.pow(B, a) % p;
     aliceReady = true;
-    document.getElementById('alice-secret').innerText = "Waiting for Bob...";
+    document.getElementById('alice-secret').innerText = "Waiting for Bob to calculate...";
     checkKeysMatch();
 }
 
@@ -102,7 +105,7 @@ function calculateAliceSecret() {
 function calculateBobSecret() {
     bobSecret = Math.pow(A, b) % p;
     bobReady = true;
-    document.getElementById('bob-secret').innerText = "Waiting for Alice...";
+    document.getElementById('bob-secret').innerText = "Waiting for Alice to calculate...";
     checkKeysMatch();
 }
 
