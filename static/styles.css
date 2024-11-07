@@ -48,3 +48,20 @@ body {
     color: #666;
   }
   
+
+  .inbox {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 10px;
+}
+
+.inbox h4 {
+    margin: 0;
+    font-size: 1em;
+    color: #333;
+}
+
+.inbox p {
+    color: #444;
+    font-size: 0.9em;
+}

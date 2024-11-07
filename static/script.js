@@ -9,8 +9,7 @@ function sendToBob() {
         alert("Please enter valid integers for g and p.");
         return;
     }
-    // document.getElementById('alice-content').innerHTML += `<p>Alice sends Bob g = ${g} and p = ${p}.</p>`;
-    document.getElementById('bob-content').innerHTML += `
+    document.getElementById('bob-inbox').innerHTML += `
         <p>From Alice: Hey Bob, let's use g = ${g} and p = ${p}.</p>
         <button onclick="acceptGP()">Accept</button>
     `;
@@ -19,7 +18,7 @@ function sendToBob() {
 
 // Bob accepts g and p
 function acceptGP() {
-    document.getElementById('alice-content').innerHTML += `<p>Bob has accepted g = ${g} and p = ${p}.</p>`;
+    document.getElementById('alice-inbox').innerHTML += `<p>Bob has accepted g = ${g} and p = ${p}.</p>`;
     document.getElementById('alice-content').innerHTML += `
         <p>Choose an exponent a:</p>
         <input type="number" id="a" placeholder="Alice's exponent a">
@@ -40,11 +39,8 @@ function calculateA() {
         return;
     }
     A = Math.pow(g, a) % p;
-    document.getElementById('alice-content').innerHTML += `
-        <p>You chose exponent a = ${a}.</p>
-        <button onclick="sendAToBob()">Send A to Bob</button>
-    `;
-    // document.getElementById('eve-observations').innerHTML += `<p>Alice sends A = ${A}</p>`;
+    document.getElementById('alice-inbox').innerHTML += `<p>You chose exponent a = ${a}.</p>`;
+    document.getElementById('alice-content').innerHTML += `<button onclick="sendAToBob()">Send A to Bob</button>`;
 }
 
 // Calculate B for Bob
@@ -55,22 +51,19 @@ function calculateB() {
         return;
     }
     B = Math.pow(g, b) % p;
-    document.getElementById('bob-content').innerHTML += `
-        <p>You chose exponent b = ${b}.</p>
-        <button onclick="sendBToAlice()">Send B to Alice</button>
-    `;
-    // document.getElementById('eve-observations').innerHTML += `<p>Bob sends B = ${B}</p>`;
+    document.getElementById('bob-inbox').innerHTML += `<p>You chose exponent b = ${b}.</p>`;
+    document.getElementById('bob-content').innerHTML += `<button onclick="sendBToAlice()">Send B to Alice</button>`;
 }
 
 // Send A to Bob and B to Alice
 function sendAToBob() {
-    document.getElementById('bob-content').innerHTML += `<p>From Alice: Here is my A = ${A}.</p>`;
+    document.getElementById('bob-inbox').innerHTML += `<p>From Alice: Here is my A = ${A}.</p>`;
     document.getElementById('eve-observations').innerHTML += `<p>Alice sends A = ${A}</p>`;
     checkForKeyCalculation();
 }
 
 function sendBToAlice() {
-    document.getElementById('alice-content').innerHTML += `<p>From Bob: Here is my B = ${B}.</p>`;
+    document.getElementById('alice-inbox').innerHTML += `<p>From Bob: Here is my B = ${B}.</p>`;
     document.getElementById('eve-observations').innerHTML += `<p>Bob sends B = ${B}</p>`;
     checkForKeyCalculation();
 }

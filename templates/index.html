@@ -8,8 +8,7 @@
 </head>
 <body>
     <header class="header"></header>
-        <h1>Diffie-Hellman interactive app</h1>
-    </header>
+    <h1>Diffie-Hellman interactive app</h1>
 
     <div id="alice-section" class="participant">
         <h3>Alice</h3>
@@ -19,8 +18,11 @@
             <input type="number" id="p" placeholder="Modulus p">
             <button onclick="sendToBob()">Send to Bob</button>
         </div>
+        <div id="alice-inbox" class="inbox">
+            <h4>Alice's Inbox</h4>
+        </div>
     </div>
-    
+
     <div id="eve-section" class="participant">
         <h3>Eve's Observations</h3>
         <div id="eve-observations">
@@ -30,15 +32,13 @@
 
     <div id="bob-section" class="participant">
         <h3>Bob</h3>
-        <div id="bob-content">
-            <p id="bob-input" style="display: none;">
-            </p>
+        <div id="bob-content"></div>
+        <div id="bob-inbox" class="inbox">
+            <h4>Bob's Inbox</h4>
         </div>
     </div>
 
-
-    <div id="match-result">
-    </div>
+    <div id="match-result"></div>
 
     <script src="./static/script.js"></script>
 </body>
