@@ -9,26 +9,46 @@ function sendToBob() {
         alert("Please enter valid integers for g and p.");
         return;
     }
-    document.getElementById('bob-inbox').innerHTML += `
-        <p>From Alice: Hey Bob, let's use g = ${g} and p = ${p}.</p>
-        <button onclick="acceptGP()">Accept</button>
-    `;
-    document.getElementById('eve-observations').innerHTML += `<p>Alice sends Bob g = ${g}, p = ${p}</p>`;
+    
+    const gpMessage = `<p class="gp-message">From Alice: Hey Bob, let's use g = ${g} and p = ${p}.</p>`;
+    const existingGP = document.querySelector('#bob-inbox .gp-message');
+    if (existingGP) {
+        existingGP.outerHTML = gpMessage;
+    } else {
+        document.getElementById('bob-inbox').innerHTML += gpMessage;
+        document.getElementById('bob-content').innerHTML += `
+            <button onclick="acceptGP()">Accept</button>
+        `;
+    }
+
+    const eveGPMessage = `<p class="eve-gp">Alice sends Bob g = ${g}, p = ${p}</p>`;
+    const existingEveGP = document.querySelector('#eve-observations .eve-gp');
+    if (existingEveGP) {
+        existingEveGP.outerHTML = eveGPMessage;
+    } else {
+        document.getElementById('eve-observations').innerHTML += eveGPMessage;
+    }
 }
 
 // Bob accepts g and p
 function acceptGP() {
-    document.getElementById('alice-inbox').innerHTML += `<p>Bob has accepted g = ${g} and p = ${p}.</p>`;
-    document.getElementById('alice-content').innerHTML += `
-        <p>Choose an exponent a:</p>
-        <input type="number" id="a" placeholder="Alice's exponent a">
-        <button onclick="calculateA()">Calculate A</button>
-    `;
-    document.getElementById('bob-content').innerHTML += `
-        <p>Choose an exponent b:</p>
-        <input type="number" id="b" placeholder="Bob's exponent b">
-        <button onclick="calculateB()">Calculate B</button>
-    `;
+    const acceptMessage = `<p class="accept-message">Bob has accepted g = ${g} and p = ${p}.</p>`;
+    const existingAccept = document.querySelector('#alice-inbox .accept-message');
+    if (existingAccept) {
+        existingAccept.outerHTML = acceptMessage;
+    } else {
+        document.getElementById('alice-inbox').innerHTML += acceptMessage;
+        document.getElementById('alice-content').innerHTML += `
+            <p>Choose an exponent a:</p>
+            <input type="number" id="a" placeholder="Alice's exponent a">
+            <button onclick="calculateA()">Calculate A</button>
+        `;
+        document.getElementById('bob-content').innerHTML += `
+            <p>Choose an exponent b:</p>
+            <input type="number" id="b" placeholder="Bob's exponent b">
+            <button onclick="calculateB()">Calculate B</button>
+        `;
+    }
 }
 
 // Calculate A for Alice
@@ -39,8 +59,20 @@ function calculateA() {
         return;
     }
     A = Math.pow(g, a) % p;
-    document.getElementById('alice-inbox').innerHTML += `<p>You chose exponent a = ${a}.</p>`;
-    document.getElementById('alice-content').innerHTML += `<button onclick="sendAToBob()">Send A to Bob</button>`;
+    
+    const choiceMessage = `<p class="alice-choice">You chose exponent a = ${a}.</p>`;
+    const existingChoice = document.querySelector('#alice-content .alice-choice');
+    if (existingChoice) {
+        existingChoice.outerHTML = choiceMessage;
+    } else {
+        document.getElementById('alice-content').innerHTML += choiceMessage;
+    }
+
+    if (!document.querySelector('#alice-content .send-a-button')) {
+        document.getElementById('alice-content').innerHTML += `
+            <button class="send-a-button" onclick="sendAToBob()">Send A to Bob</button>
+        `;
+    }
 }
 
 // Calculate B for Bob
@@ -51,38 +83,71 @@ function calculateB() {
         return;
     }
     B = Math.pow(g, b) % p;
-    document.getElementById('bob-inbox').innerHTML += `<p>You chose exponent b = ${b}.</p>`;
-    document.getElementById('bob-content').innerHTML += `<button onclick="sendBToAlice()">Send B to Alice</button>`;
+
+    const choiceMessage = `<p class="bob-choice">You chose exponent b = ${b}.</p>`;
+    const existingChoice = document.querySelector('#bob-content .bob-choice');
+    if (existingChoice) {
+        existingChoice.outerHTML = choiceMessage;
+    } else {
+        document.getElementById('bob-content').innerHTML += choiceMessage;
+    }
+
+    if (!document.querySelector('#bob-content .send-b-button')) {
+        document.getElementById('bob-content').innerHTML += `
+            <button class="send-b-button" onclick="sendBToAlice()">Send B to Alice</button>
+        `;
+    }
 }
 
-// Send A to Bob and B to Alice
+// Send A to Bob
 function sendAToBob() {
-    document.getElementById('bob-inbox').innerHTML += `<p>From Alice: Here is my A = ${A}.</p>`;
-    document.getElementById('eve-observations').innerHTML += `<p>Alice sends A = ${A}</p>`;
-    checkForKeyCalculation();
+    const aMessage = `<p class="a-message">From Alice: Here is my A = ${A}.</p>`;
+    const existingA = document.querySelector('#bob-inbox .a-message');
+    if (existingA) {
+        existingA.outerHTML = aMessage;
+    } else {
+        document.getElementById('bob-inbox').innerHTML += aMessage;
+    }
+
+    const eveAMessage = `<p class="eve-a">Alice sends A = ${A}</p>`;
+    const existingEveA = document.querySelector('#eve-observations .eve-a');
+    if (existingEveA) {
+        existingEveA.outerHTML = eveAMessage;
+    } else {
+        document.getElementById('eve-observations').innerHTML += eveAMessage;
+    }
+
+    if (!document.getElementById('bob-calculate-key')) {
+        document.getElementById('bob-content').innerHTML += `
+            <button id="bob-calculate-key" onclick="calculateBobSecret()">Calculate shared secret key</button>
+            <p id="bob-secret"></p>
+        `;
+    }
 }
 
+// Send B to Alice
 function sendBToAlice() {
-    document.getElementById('alice-inbox').innerHTML += `<p>From Bob: Here is my B = ${B}.</p>`;
-    document.getElementById('eve-observations').innerHTML += `<p>Bob sends B = ${B}</p>`;
-    checkForKeyCalculation();
-}
+    const bMessage = `<p class="b-message">From Bob: Here is my B = ${B}.</p>`;
+    const existingB = document.querySelector('#alice-inbox .b-message');
+    if (existingB) {
+        existingB.outerHTML = bMessage;
+    } else {
+        document.getElementById('alice-inbox').innerHTML += bMessage;
+    }
 
-// Show button to calculate shared secret key
-function checkForKeyCalculation() {
-    if (A && B) {
-        if (!document.getElementById('alice-calculate-key')) {
-            document.getElementById('alice-content').innerHTML += `
-                <button id="alice-calculate-key" onclick="calculateAliceSecret()">Calculate shared secret key</button>
-                <p id="alice-secret"></p>
-            `;
-        }
-        if (!document.getElementById('bob-calculate-key')) {
-            document.getElementById('bob-content').innerHTML += `
-                <button id="bob-calculate-key" onclick="calculateBobSecret()">Calculate shared secret key</button>
-                <p id="bob-secret"></p>
-            `;
-        }
+    const eveBMessage = `<p class="eve-b">Bob sends B = ${B}</p>`;
+    const existingEveB = document.querySelector('#eve-observations .eve-b');
+    if (existingEveB) {
+        existingEveB.outerHTML = eveBMessage;
+    } else {
+        document.getElementById('eve-observations').innerHTML += eveBMessage;
+    }
+
+    if (!document.getElementById('alice-calculate-key')) {
+        document.getElementById('alice-content').innerHTML += `
+            <button id="alice-calculate-key" onclick="calculateAliceSecret()">Calculate shared secret key</button>
+            <p id="alice-secret"></p>
+        `;
     }
 }
 
