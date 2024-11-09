@@ -169,7 +169,7 @@ function checkKeysMatch() {
         sharedSecret = aliceSecret; 
         
         const matchMessage = keysMatch
-            ? "Shared keys match! Secure communication established."
+            ? "Shared secret keys match!"
             : "Keys do not match! Something went wrong.";
         
         openModal(matchMessage, keysMatch);
@@ -185,6 +185,7 @@ function openModal(message, keysMatch = false) {
             ${keysMatch ? `<button class="transform-button" onclick="transformSharedKey()">Generate AES key</button>` : ''}
         </div>
     `;
+
     document.getElementById('resultModal').style.display = 'block';
 }
 
@@ -231,11 +232,13 @@ function showRecap() {
 }
 
 function restoreModalContent() {
-    const matchMessage = aliceSecret === bobSecret
-        ? "Shared keys match! Secure communication established."
+    const keysMatch = aliceSecret === bobSecret;
+    const matchMessage = keysMatch
+        ? "Shared secret keys match!"
         : "Keys do not match! Something went wrong.";
-    openModal(matchMessage, true);
+    openModal(matchMessage, keysMatch);
 }
+
 
 async function transformSharedKey() {
     if (!sharedSecret) {
@@ -252,26 +255,41 @@ async function transformSharedKey() {
             body: JSON.stringify({ shared_secret: sharedSecret })
         });
 
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const result = await response.json();
-        if (result.aes_key) {
-            const modalBody = document.getElementById('modal-body');
-            modalBody.innerHTML = `
-                <div class="aes-key-explanation">
-                    <h3>AES Key Generated</h3>
-                    <div class="key-display">
-                        <strong>Original Shared Secret:</strong> ${sharedSecret}
-                    </div>
-                    <div class="key-display">
-                        <strong>Generated AES Key:</strong> ${result.aes_key}
-                    </div>
-                </div>
-                <button class="back-button" onclick="restoreModalContent()">Back</button>
-            `;
-        } else {
+        
+        if (!result.aes_key) {
             throw new Error("No AES key in response");
         }
+
+        const modalBody = document.getElementById('modal-body');
+        modalBody.innerHTML = `
+            <div class="aes-key-explanation">
+                <h3>AES Key Generated</h3>
+                <div class="key-display">
+                    <strong>Original Shared Secret:</strong> ${sharedSecret}
+                </div>
+                <div class="key-display">
+                    <strong>Generated AES Key:</strong> ${result.aes_key}
+                </div>
+                <p>Once Alice and Bob calculated their shared secret, it was transformed into an AES-compatible key:</p>
+                <ul>
+                    <li><strong>Step 1:</strong> Use the shared secret key from Diffie-Hellman (s = ${sharedSecret})</li>
+                    <li><strong>Step 2:</strong> Hash the shared key using SHA-256 to create a 256-bit key for AES</li>
+                    <li><strong>Step 3:</strong> Convert the hashed value to hexadecimal format for display</li>
+                </ul>
+                <p>This AES-256 key can now be used for secure symmetric encryption between Alice and Bob.</p>
+                <p class="note">The shared secret s generated from Diffie-Hellman is just a number. AES, however, requires a specific bit length for its key (like 128, 192, or 256 bits).</p>
+                <p class="note">To turn s into a usable AES key, it is typically hashed to create a fixed-length key. Hashing takes an input of any size and transforms it into a fixed-size output.</p>
+                <p class="note">For demonstration, we sent back the AES key in hexadecimal form</p>
+            </div>
+            <button class="back-button" onclick="restoreModalContent()">Back</button>
+        `;
     } catch (error) {
         console.error("Error:", error);
-        alert("Failed to transform shared key to AES.");
+        alert(`Failed to transform shared key to AES: ${error.message}`);
     }
 }

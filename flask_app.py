@@ -20,7 +20,6 @@ def transform_to_aes():
 
     aes_key = hashlib.sha256(str(shared_secret).encode()).digest()
 
-    # For demonstration, we will just send back the AES key in hexadecimal form
     return jsonify({"aes_key": aes_key.hex()})
 
 if __name__ == '__main__':
