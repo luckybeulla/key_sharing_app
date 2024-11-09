@@ -268,12 +268,12 @@ async function transformSharedKey() {
         const modalBody = document.getElementById('modal-body');
         modalBody.innerHTML = `
             <div class="aes-key-explanation">
-                <h3>AES Key Generated</h3>
+                <h3>AES key generation</h3>
                 <div class="key-display">
-                    <strong>Original Shared Secret:</strong> ${sharedSecret}
+                    <strong>Original shared secret:</strong> ${sharedSecret}
                 </div>
                 <div class="key-display">
-                    <strong>Generated AES Key:</strong> ${result.aes_key}
+                    <strong>Generated AES key:</strong> ${result.aes_key}
                 </div>
                 <p>Once Alice and Bob calculated their shared secret, it was transformed into an AES-compatible key:</p>
                 <ul>
