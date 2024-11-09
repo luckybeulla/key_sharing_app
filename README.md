@@ -4,7 +4,7 @@
 
 ## Diffie-Hellman interactive web app ##
 
-### Present bugs in the code ###\
+### Current bugs in the code ###
 
 * AES key can not calculate a key that is equal to 0 so when the user choses number that lead to the secret key being 0, the AES key generation button will not work
 
