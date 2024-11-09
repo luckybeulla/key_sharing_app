@@ -1,7 +1,6 @@
 let g, p, a, b, A, B, aliceSecret, bobSecret;
 let aliceReady = false, bobReady = false;
 
-// Send g and p from Alice to Bob
 function sendToBob() {
     g = parseInt(document.getElementById('g').value);
     p = parseInt(document.getElementById('p').value);
@@ -30,7 +29,6 @@ function sendToBob() {
     }
 }
 
-// Bob accepts g and p
 function acceptGP() {
     const acceptMessage = `<p class="accept-message">Bob has accepted g = ${g} and p = ${p}.</p>`;
     const existingAccept = document.querySelector('#alice-inbox .accept-message');
@@ -51,7 +49,7 @@ function acceptGP() {
     }
 }
 
-// Calculate A for Alice
+
 function calculateA() {
     a = parseInt(document.getElementById('a').value);
     if (isNaN(a)) {
@@ -75,7 +73,6 @@ function calculateA() {
     }
 }
 
-// Calculate B for Bob
 function calculateB() {
     b = parseInt(document.getElementById('b').value);
     if (isNaN(b)) {
@@ -99,7 +96,6 @@ function calculateB() {
     }
 }
 
-// Send A to Bob
 function sendAToBob() {
     const aMessage = `<p class="a-message">From Alice: Here is my A = ${A}.</p>`;
     const existingA = document.querySelector('#bob-inbox .a-message');
@@ -125,7 +121,6 @@ function sendAToBob() {
     }
 }
 
-// Send B to Alice
 function sendBToAlice() {
     const bMessage = `<p class="b-message">From Bob: Here is my B = ${B}.</p>`;
     const existingB = document.querySelector('#alice-inbox .b-message');
@@ -151,7 +146,6 @@ function sendBToAlice() {
     }
 }
 
-// Calculate shared secret key for Alice
 function calculateAliceSecret() {
     aliceSecret = Math.pow(B, a) % p;
     aliceReady = true;
@@ -159,7 +153,6 @@ function calculateAliceSecret() {
     checkKeysMatch();
 }
 
-// Calculate shared secret key for Bob
 function calculateBobSecret() {
     bobSecret = Math.pow(A, b) % p;
     bobReady = true;
@@ -167,14 +160,62 @@ function calculateBobSecret() {
     checkKeysMatch();
 }
 
-// Check if Alice and Bob's keys match
 function checkKeysMatch() {
     if (aliceReady && bobReady) {
         const matchMessage = (aliceSecret === bobSecret)
             ? "Shared keys match! Secure communication established."
             : "Keys do not match! Something went wrong.";
-        document.getElementById('match-result').innerHTML = `<p>${matchMessage}</p>`;
-        document.getElementById('alice-secret').innerText = `Shared key: ${aliceSecret}`;
-        document.getElementById('bob-secret').innerText = `Shared key: ${bobSecret}`;
+        
+        openModal(matchMessage);
+        console.log(`Alice's Secret Key: ${aliceSecret}`);
+        console.log(`Bob's Secret Key: ${bobSecret}`);
     }
+}
+
+
+
+function openModal(message) {
+    document.getElementById('modal-message').innerText = message;
+    document.getElementById('resultModal').style.display = 'block';
+}
+
+function closeModal() {
+    document.getElementById('resultModal').style.display = 'none';
+    document.getElementById('modal-body').innerHTML = `
+        <p id="modal-message"></p>
+        <button id="recapButton" onclick="showRecap()">Recap</button>
+    `;
+}
+
+function showRecap() {
+    document.getElementById('modal-body').innerHTML = `
+        <div class="diffie-hellman-explanation">
+            <h3>Diffie-Hellman Key Exchange Recap</h3>  
+            <p>Diffie-Hellman (DH) is a way for two parties (we called them Alice and Bob) to create a shared secret key over an insecure network.</p>
+            
+            <ul>
+                <li>Both Alice and Bob agree on two public large integers: a <em>prime number</em> p and a <em>base</em> g.</li>
+                
+                <li>Each party generates a <strong>private key</strong>. Alice's private key is a, and Bob's private key is b.</li>
+                
+                <li>Using their private keys, each party generates a <strong>public key</strong>:
+                    <ul>
+                        <li>Alice computes her public key as A = g<sup>a</sup> mod p</li>
+                        <li>Bob computes his public key as B = g<sup>b</sup> mod p</li>
+                    </ul>
+                </li>
+                
+                <li>They exchange their public keys A and B</li>
+                
+                <li>Each party then uses their own private key and the other party's public key to calculate the same <strong>shared secret</strong>:
+                    <ul>
+                        <li>Alice computes s = B<sup>a</sup> mod p</li>
+                        <li>Bob computes s = A<sup>b</sup> mod p</li>
+                    </ul>
+                </li>
+            </ul>
+            
+            <p>This shared secret <strong>s</strong> will be the same for both Alice and Bob, thanks to mathematical properties of modular exponentiation.</p>
+        </div>
+    `;
 }
