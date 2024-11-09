@@ -11,4 +11,7 @@
 * The backend code in script.js doing the Diffie-Hellman calculations does not handle large integers so when Alice chooses big numbers, the returned values are NaN
 
 
+> **Note**: `pip install Flask pycryptodome` depedency to simulate AES key transformation in python
+
+
 
