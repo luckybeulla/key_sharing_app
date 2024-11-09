@@ -1,3 +1,4 @@
+// script.js
 let g, p, a, b, A, B, aliceSecret, bobSecret;
 let aliceReady = false, bobReady = false;
 
@@ -160,22 +161,30 @@ function calculateBobSecret() {
     checkKeysMatch();
 }
 
+let sharedSecret = null;
+
 function checkKeysMatch() {
     if (aliceReady && bobReady) {
-        const matchMessage = (aliceSecret === bobSecret)
+        const keysMatch = aliceSecret === bobSecret;
+        sharedSecret = aliceSecret; 
+        
+        const matchMessage = keysMatch
             ? "Shared keys match! Secure communication established."
             : "Keys do not match! Something went wrong.";
         
-        openModal(matchMessage);
-        console.log(`Alice's Secret Key: ${aliceSecret}`);
-        console.log(`Bob's Secret Key: ${bobSecret}`);
+        openModal(matchMessage, keysMatch);
     }
 }
 
-
-
-function openModal(message) {
-    document.getElementById('modal-message').innerText = message;
+function openModal(message, keysMatch = false) {
+    const modalBody = document.getElementById('modal-body');
+    modalBody.innerHTML = `
+        <p id="modal-message">${message}</p>
+        <div class="modal-buttons">
+            <button id="recapButton" onclick="showRecap()">Recap</button>
+            ${keysMatch ? `<button class="transform-button" onclick="transformSharedKey()">Generate AES key</button>` : ''}
+        </div>
+    `;
     document.getElementById('resultModal').style.display = 'block';
 }
 
@@ -217,5 +226,52 @@ function showRecap() {
             
             <p>This shared secret <strong>s</strong> will be the same for both Alice and Bob, thanks to mathematical properties of modular exponentiation.</p>
         </div>
+        <button class="back-button" onclick="restoreModalContent()">Back</button>
     `;
+}
+
+function restoreModalContent() {
+    const matchMessage = aliceSecret === bobSecret
+        ? "Shared keys match! Secure communication established."
+        : "Keys do not match! Something went wrong.";
+    openModal(matchMessage, true);
+}
+
+async function transformSharedKey() {
+    if (!sharedSecret) {
+        console.error("No shared secret available");
+        return;
+    }
+
+    try {
+        const response = await fetch('/transform_to_aes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ shared_secret: sharedSecret })
+        });
+
+        const result = await response.json();
+        if (result.aes_key) {
+            const modalBody = document.getElementById('modal-body');
+            modalBody.innerHTML = `
+                <div class="aes-key-explanation">
+                    <h3>AES Key Generated</h3>
+                    <div class="key-display">
+                        <strong>Original Shared Secret:</strong> ${sharedSecret}
+                    </div>
+                    <div class="key-display">
+                        <strong>Generated AES Key:</strong> ${result.aes_key}
+                    </div>
+                </div>
+                <button class="back-button" onclick="restoreModalContent()">Back</button>
+            `;
+        } else {
+            throw new Error("No AES key in response");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Failed to transform shared key to AES.");
+    }
 }
