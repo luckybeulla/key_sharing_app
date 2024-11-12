@@ -89,6 +89,16 @@ h1 {
     margin: 5px 0;
 }
 
+.form_group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+label {
+    margin-right: 10px;
+}
+
 input[type="number"] {
     width: calc(100% - 80px);
     padding: 8px;

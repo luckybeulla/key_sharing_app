@@ -5,8 +5,8 @@ let aliceReady = false, bobReady = false;
 function sendToBob() {
     g = parseInt(document.getElementById('g').value);
     p = parseInt(document.getElementById('p').value);
-    if (isNaN(g) || isNaN(p)) {
-        alert("Please enter valid integers for g and p.");
+    if (isNaN(g) || isNaN(p) || g <= 0 || p <= 0) {
+        alert("g and p must be positive integers");
         return;
     }
     
@@ -33,18 +33,28 @@ function sendToBob() {
 function acceptGP() {
     const acceptMessage = `<p class="accept-message">Bob has accepted g = ${g} and p = ${p}.</p>`;
     const existingAccept = document.querySelector('#alice-inbox .accept-message');
+    const existingEveGPAccept = document.querySelector('#eve-observations .eve-gp-accept');
+    const eveGPAcceptMessage = `<p class="eve-gp-accept">Bob has accepted g = ${g}, p = ${p}</p>`;
     if (existingAccept) {
         existingAccept.outerHTML = acceptMessage;
+        existingEveGPAccept.outerHTML = eveGPAcceptMessage;
     } else {
         document.getElementById('alice-inbox').innerHTML += acceptMessage;
         document.getElementById('alice-content').innerHTML += `
             <p>Choose an exponent a:</p>
-            <input type="number" id="a" placeholder="Alice's exponent a">
+            <div class="form_group">
+                <label for="g">a&nbsp=</label>
+                <input type="number" id="a" placeholder="Alice's exponent a">
+            </div>
             <button onclick="calculateA()">Calculate A</button>
-        `;
+        `;        
+        document.getElementById('eve-observations').innerHTML += eveGPAcceptMessage;
         document.getElementById('bob-content').innerHTML += `
             <p>Choose an exponent b:</p>
-            <input type="number" id="b" placeholder="Bob's exponent b">
+            <div class="form_group">
+                <label for="b">b&nbsp=</label>
+                <input type="number" id="b" placeholder="Bob's exponent b">
+            </div>
             <button onclick="calculateB()">Calculate B</button>
         `;
     }

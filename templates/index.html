@@ -19,8 +19,14 @@
         <h3>Alice</h3>
         <div id="alice-content">
             <p>Choose values for g and p:</p>
-            <input type="number" id="g" placeholder="Base g">
-            <input type="number" id="p" placeholder="Modulus p">
+            <div class="form_group">
+                <label for="g">g&nbsp=</label>
+                <input type="number" id="g" placeholder="Base g">
+            </div>
+            <div class="form_group">
+                <label for="p">p&nbsp=</label>
+                <input type="number" id="p" placeholder="Modulus p">
+            </div>
             <button onclick="sendToBob()">Send to Bob</button>
         </div>
         <div id="alice-inbox" class="inbox">
