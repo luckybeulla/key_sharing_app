@@ -9,7 +9,7 @@ function sendToBob() {
         alert("g and p must be positive integers");
         return;
     }
-    
+
     const gpMessage = `<p class="gp-message">From Alice: Hey Bob, let's use g = ${g} and p = ${p}.</p>`;
     const existingGP = document.querySelector('#bob-inbox .gp-message');
     if (existingGP) {
@@ -28,6 +28,7 @@ function sendToBob() {
     } else {
         document.getElementById('eve-observations').innerHTML += eveGPMessage;
     }
+    loadSavedInput();
 }
 
 function acceptGP() {
@@ -58,13 +59,14 @@ function acceptGP() {
             <button onclick="calculateB()">Calculate B</button>
         `;
     }
+    loadSavedInput();
 }
 
 
 function calculateA() {
     a = parseInt(document.getElementById('a').value);
-    if (isNaN(a)) {
-        alert("Please enter a valid integer for Alice's exponent.");
+    if (isNaN(a) || a >= p) {
+        alert("Please enter a valid integer for Alice's exponent.\nRemember, a must be less than p.");
         return;
     }
     A = Math.pow(g, a) % p;
@@ -82,12 +84,13 @@ function calculateA() {
             <button class="send-a-button" onclick="sendAToBob()">Send A to Bob</button>
         `;
     }
+    loadSavedInput();
 }
 
 function calculateB() {
     b = parseInt(document.getElementById('b').value);
-    if (isNaN(b)) {
-        alert("Please enter a valid integer for Bob's exponent.");
+    if (isNaN(b) || b >= p) {
+        alert("Please enter a valid integer for Bob's exponent.\nRemember, b must be less than p.");
         return;
     }
     B = Math.pow(g, b) % p;
@@ -105,6 +108,7 @@ function calculateB() {
             <button class="send-b-button" onclick="sendBToAlice()">Send B to Alice</button>
         `;
     }
+    loadSavedInput();
 }
 
 function sendAToBob() {
@@ -130,6 +134,7 @@ function sendAToBob() {
             <p id="bob-secret"></p>
         `;
     }
+    loadSavedInput();
 }
 
 function sendBToAlice() {
@@ -155,6 +160,7 @@ function sendBToAlice() {
             <p id="alice-secret"></p>
         `;
     }
+    loadSavedInput();
 }
 
 function calculateAliceSecret() {
@@ -302,4 +308,12 @@ async function transformSharedKey() {
         console.error("Error:", error);
         alert(`Failed to transform shared key to AES: ${error.message}`);
     }
+}
+
+
+function loadSavedInput() {
+    document.getElementById("g").value = g;
+    document.getElementById("p").value = p;
+    document.getElementById("a").value = a;
+    document.getElementById("b").value = b;
 }
