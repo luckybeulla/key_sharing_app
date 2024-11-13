@@ -102,12 +102,7 @@ function calculateA() {
         alert("Please enter a valid integer for Alice's exponent.\nRemember, a must be less than p.");
         return;
     }
-// <<<<<<< final-edits
-//     A = modPow(g, a, p);
-// =======
     A = (BigInt(g)**BigInt(a)) % BigInt(p);
-// >>>>>>> main
-    
     const choiceMessage = `
         <p class="alice-choice">
             You chose exponent a = ${a}.<br>
@@ -135,11 +130,8 @@ function calculateB() {
         alert("Please enter a valid integer for Bob's exponent.\nRemember, b must be less than p.");
         return;
     }
-// <<<<<<< final-edits
-//     B = modPow(g, b, p);
-// =======
+
     B = (BigInt(g)**BigInt(b)) % BigInt(p);
-// >>>>>>> main
 
     const choiceMessage = `
         <p class="bob-choice">
@@ -221,22 +213,14 @@ function sendBToAlice() {
 }
 
 function calculateAliceSecret() {
-// <<<<<<< final-edits
-//     aliceSecret = modPow(B, a, p);
-// =======
     aliceSecret = (BigInt(B)**BigInt(a)) % BigInt(p);
-// >>>>>>> main
     aliceReady = true;
     document.getElementById('alice-secret').innerText = "Waiting for Bob to calculate...";
     checkKeysMatch();
 }
 
 function calculateBobSecret() {
-// <<<<<<< final-edits
-//     bobSecret = modPow(A, b, p);
-// =======
     bobSecret = (BigInt(A)**BigInt(b)) % BigInt(p);
-// >>>>>>> main
     bobReady = true;
     document.getElementById('bob-secret').innerText = "Waiting for Alice to calculate...";
     checkKeysMatch();
