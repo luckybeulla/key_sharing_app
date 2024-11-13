@@ -77,10 +77,10 @@ function acceptGP() {
 }
 
 function calculateA() {
-    const aInput = document.getElementById('a');
-    if (!aInput) return;
+    // const aInput = document.getElementById('a');
+    // if (!aInput) return;
     
-    a = parseInt(aInput.value);
+    a = parseInt(document.getElementById('a').value);
     if (isNaN(a) || a >= p) {
         alert("Please enter a valid integer for Alice's exponent.\nRemember, a must be less than p.");
         return;
@@ -109,10 +109,10 @@ function calculateA() {
 }
 
 function calculateB() {
-    const bInput = document.getElementById('b');
-    if (!bInput) return;
+    // const bInput = document.getElementById('b');
+    // if (!bInput) return;
     
-    b = parseInt(bInput.value);
+    b = parseInt(document.getElementById('b').value);
     if (isNaN(b) || b >= p) {
         alert("Please enter a valid integer for Bob's exponent.\nRemember, b must be less than p.");
         return;
@@ -211,6 +211,7 @@ function calculateBobSecret() {
     document.getElementById('bob-secret').innerText = "Waiting for Alice to calculate...";
     checkKeysMatch();
 }
+
 let sharedSecret = null;
 
 function checkKeysMatch() {
@@ -352,13 +353,13 @@ async function transformSharedKey() {
 }
 
 function loadSavedInput() {
-    const gInput = document.getElementById("g");
-    const pInput = document.getElementById("p");
-    const aInput = document.getElementById("a");
-    const bInput = document.getElementById("b");
+    document.getElementById("g").value = g;
+    document.getElementById("p").value = p;
+    document.getElementById("a").value = a;
+    document.getElementById("b").value = b;
     
-    if (gInput) gInput.value = g || '';
-    if (pInput) pInput.value = p || '';
-    if (aInput) aInput.value = a || '';
-    if (bInput) bInput.value = b || '';
+    // if (gInput) gInput.value = g || '';
+    // if (pInput) pInput.value = p || '';
+    // if (aInput) aInput.value = a || '';
+    // if (bInput) bInput.value = b || '';
 }
