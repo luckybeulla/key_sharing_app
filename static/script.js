@@ -10,7 +10,7 @@ function sendToBob() {
         return;
     }
 
-    const gpMessage = `<p class="gp-message">From Alice: Hey Bob, let's use g = ${g} and p = ${p}.</p>`;
+    const gpMessage = `<p class="gp-message pulse">From Alice: Hey Bob, let's use g = ${g} and p = ${p}.</p>`;
     const existingGP = document.querySelector('#bob-inbox .gp-message');
     if (existingGP) {
         existingGP.outerHTML = gpMessage;
@@ -21,7 +21,7 @@ function sendToBob() {
         `;
     }
 
-    const eveGPMessage = `<p class="eve-gp">Alice sends Bob g = ${g}, p = ${p}</p>`;
+    const eveGPMessage = `<p class="eve-gp eve-pulse">Alice sends Bob g = ${g}, p = ${p}</p>`;
     const existingEveGP = document.querySelector('#eve-observations .eve-gp');
     if (existingEveGP) {
         existingEveGP.outerHTML = eveGPMessage;
@@ -32,10 +32,10 @@ function sendToBob() {
 }
 
 function acceptGP() {
-    const acceptMessage = `<p class="accept-message">Bob has accepted g = ${g} and p = ${p}.</p>`;
+    const acceptMessage = `<p class="accept-message pulse">Bob has accepted g = ${g} and p = ${p}.</p>`;
     const existingAccept = document.querySelector('#alice-inbox .accept-message');
     const existingEveGPAccept = document.querySelector('#eve-observations .eve-gp-accept');
-    const eveGPAcceptMessage = `<p class="eve-gp-accept">Bob has accepted g = ${g}, p = ${p}</p>`;
+    const eveGPAcceptMessage = `<p class="eve-gp-accept eve-pulse">Bob has accepted g = ${g}, p = ${p}</p>`;
     if (existingAccept) {
         existingAccept.outerHTML = acceptMessage;
         existingEveGPAccept.outerHTML = eveGPAcceptMessage;
@@ -71,7 +71,12 @@ function calculateA() {
     }
     A = Math.pow(g, a) % p;
     
-    const choiceMessage = `<p class="alice-choice">You chose exponent a = ${a}.</p>`;
+    const choiceMessage = `
+        <p class="alice-choice">
+            You chose exponent a = ${a}.<br>
+            A = g<sup>a</sup> % p, therefore<br>
+            A = ${g}<sup>${a}</sup> % ${p} = ${A}
+        </p>`;
     const existingChoice = document.querySelector('#alice-content .alice-choice');
     if (existingChoice) {
         existingChoice.outerHTML = choiceMessage;
@@ -95,7 +100,12 @@ function calculateB() {
     }
     B = Math.pow(g, b) % p;
 
-    const choiceMessage = `<p class="bob-choice">You chose exponent b = ${b}.</p>`;
+    const choiceMessage = `
+                            <p class="bob-choice">
+                                You chose exponent b = ${b}.<br>
+                                B = g<sup>b</sup> % p, therefore<br>
+                                B = ${g}<sup>${b}</sup> % ${p} = ${B}
+                            </p>`;
     const existingChoice = document.querySelector('#bob-content .bob-choice');
     if (existingChoice) {
         existingChoice.outerHTML = choiceMessage;
@@ -112,7 +122,7 @@ function calculateB() {
 }
 
 function sendAToBob() {
-    const aMessage = `<p class="a-message">From Alice: Here is my A = ${A}.</p>`;
+    const aMessage = `<p class="a-message pulse">From Alice: Here is my A = ${A}.</p>`;
     const existingA = document.querySelector('#bob-inbox .a-message');
     if (existingA) {
         existingA.outerHTML = aMessage;
@@ -120,7 +130,7 @@ function sendAToBob() {
         document.getElementById('bob-inbox').innerHTML += aMessage;
     }
 
-    const eveAMessage = `<p class="eve-a">Alice sends A = ${A}</p>`;
+    const eveAMessage = `<p class="eve-a eve-pulse">Alice sends A = ${A}</p>`;
     const existingEveA = document.querySelector('#eve-observations .eve-a');
     if (existingEveA) {
         existingEveA.outerHTML = eveAMessage;
@@ -138,7 +148,7 @@ function sendAToBob() {
 }
 
 function sendBToAlice() {
-    const bMessage = `<p class="b-message">From Bob: Here is my B = ${B}.</p>`;
+    const bMessage = `<p class="b-message pulse" >From Bob: Here is my B = ${B}.</p>`;
     const existingB = document.querySelector('#alice-inbox .b-message');
     if (existingB) {
         existingB.outerHTML = bMessage;
@@ -146,7 +156,7 @@ function sendBToAlice() {
         document.getElementById('alice-inbox').innerHTML += bMessage;
     }
 
-    const eveBMessage = `<p class="eve-b">Bob sends B = ${B}</p>`;
+    const eveBMessage = `<p class="eve-b eve-pulse">Bob sends B = ${B}</p>`;
     const existingEveB = document.querySelector('#eve-observations .eve-b');
     if (existingEveB) {
         existingEveB.outerHTML = eveBMessage;
