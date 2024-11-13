@@ -45,6 +45,12 @@ pip install flask pycryptodome
 
 * The backend code in script.js doing the Diffie-Hellman calculations does not handle large integers so when Alice chooses big numbers, the returned values are NaN
 
+* p must be a prime number
+
+* Lots of keys do not match - for example, when Alice and Bob do not click CalculateSharedKey at the same time, keys do not match - make the order of steps clear, maybe the animation on buttons too?
+
+* 
+
 
 
 
