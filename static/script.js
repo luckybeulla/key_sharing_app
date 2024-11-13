@@ -1,6 +1,7 @@
 // script.js
 let g, p, a, b, A, B, aliceSecret, bobSecret;
 let aliceReady = false, bobReady = false;
+let sharedSecret = null;
 
 function removeAllPulseClasses(containerId) {
     const container = document.getElementById(containerId);
@@ -20,6 +21,11 @@ function sendToBob() {
     removeAllPulseClasses('bob-inbox');
     removeAllPulseClasses('eve-observations');
 
+    if (!isPrime(p)) {
+        alert("p must be a prime number!");
+        return;
+    }
+
     const gpMessage = `<p class="gp-message pulse">From Alice: Hey Bob, let's use g = ${g} and p = ${p}.</p>`;
     const existingGP = document.querySelector('#bob-inbox .gp-message');
     if (existingGP) {
@@ -31,7 +37,7 @@ function sendToBob() {
         `;
     }
 
-    const eveGPMessage = `<p class="eve-gp eve-pulse">Alice sends Bob g = ${g}, p = ${p}</p>`;
+    const eveGPMessage = `<p class="eve-gp pulse">Alice sends Bob g = ${g}, p = ${p}</p>`;
     const existingEveGP = document.querySelector('#eve-observations .eve-gp');
     if (existingEveGP) {
         existingEveGP.outerHTML = eveGPMessage;
@@ -96,7 +102,11 @@ function calculateA() {
         alert("Please enter a valid integer for Alice's exponent.\nRemember, a must be less than p.");
         return;
     }
-    A = modPow(g, a, p);
+// <<<<<<< final-edits
+//     A = modPow(g, a, p);
+// =======
+    A = (BigInt(g)**BigInt(a)) % BigInt(p);
+// >>>>>>> main
     
     const choiceMessage = `
         <p class="alice-choice">
@@ -125,7 +135,11 @@ function calculateB() {
         alert("Please enter a valid integer for Bob's exponent.\nRemember, b must be less than p.");
         return;
     }
-    B = modPow(g, b, p);
+// <<<<<<< final-edits
+//     B = modPow(g, b, p);
+// =======
+    B = (BigInt(g)**BigInt(b)) % BigInt(p);
+// >>>>>>> main
 
     const choiceMessage = `
         <p class="bob-choice">
@@ -207,25 +221,31 @@ function sendBToAlice() {
 }
 
 function calculateAliceSecret() {
-    aliceSecret = modPow(B, a, p);
+// <<<<<<< final-edits
+//     aliceSecret = modPow(B, a, p);
+// =======
+    aliceSecret = (BigInt(B)**BigInt(a)) % BigInt(p);
+// >>>>>>> main
     aliceReady = true;
     document.getElementById('alice-secret').innerText = "Waiting for Bob to calculate...";
     checkKeysMatch();
 }
 
 function calculateBobSecret() {
-    bobSecret = modPow(A, b, p);
+// <<<<<<< final-edits
+//     bobSecret = modPow(A, b, p);
+// =======
+    bobSecret = (BigInt(A)**BigInt(b)) % BigInt(p);
+// >>>>>>> main
     bobReady = true;
     document.getElementById('bob-secret').innerText = "Waiting for Alice to calculate...";
     checkKeysMatch();
 }
 
-let sharedSecret = null;
-
 function checkKeysMatch() {
     if (aliceReady && bobReady) {
         const keysMatch = aliceSecret === bobSecret;
-        sharedSecret = aliceSecret; 
+        sharedSecret = Number(aliceSecret); 
         
         const matchMessage = keysMatch
             ? "Shared secret keys match!"
@@ -265,18 +285,18 @@ function showRecap() {
             <ul>
                 <li>Both Alice and Bob agree on two public large integers: a <em>prime number</em> p and a <em>base</em> g.</li>
                 
-                <li>Each party generates a <strong>private key</strong>. Alice's private key is a, and Bob's private key is b.</li>
+                <li>Each party generates a <strong>secret number</strong>. Alice's secret number is "a", and Bob's number is "b".</li>
                 
-                <li>Using their private keys, each party generates a <strong>public key</strong>:
+                <li>Using their secret numbers, each party generates a <strong>public number</strong>:
                     <ul>
-                        <li>Alice computes her public key as A = g<sup>a</sup> mod p</li>
-                        <li>Bob computes his public key as B = g<sup>b</sup> mod p</li>
+                        <li>Alice computes her public number as A = g<sup>a</sup> mod p</li>
+                        <li>Bob computes his public number as B = g<sup>b</sup> mod p</li>
                     </ul>
                 </li>
                 
-                <li>They exchange their public keys A and B</li>
+                <li>They exchange their public numbers A and B</li>
                 
-                <li>Each party then uses their own private key and the other party's public key to calculate the same <strong>shared secret</strong>:
+                <li>Each party then uses their own secret number and the other party's public number to calculate the same <strong>shared secret</strong>:
                     <ul>
                         <li>Alice computes s = B<sup>a</sup> mod p</li>
                         <li>Bob computes s = A<sup>b</sup> mod p</li>
@@ -366,3 +386,14 @@ function loadSavedInput() {
     document.getElementById("a").value = a;
     document.getElementById("b").value = b;
 }
+
+function isPrime(num) {
+    if (num < 2) return false;
+  
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+      if (num % i == 0) {
+        return false;
+      }
+    }
+    return true;
+  }
