@@ -2,6 +2,14 @@
 let g, p, a, b, A, B, aliceSecret, bobSecret;
 let aliceReady = false, bobReady = false;
 
+function removeAllPulseClasses(containerId) {
+    const container = document.getElementById(containerId);
+    const pulseElements = container.querySelectorAll('.pulse, .eve-pulse');
+    pulseElements.forEach(element => {
+        element.classList.remove('pulse', 'eve-pulse');
+    });
+}
+
 function sendToBob() {
     g = parseInt(document.getElementById('g').value);
     p = parseInt(document.getElementById('p').value);
@@ -9,6 +17,8 @@ function sendToBob() {
         alert("g and p must be positive integers");
         return;
     }
+    removeAllPulseClasses('bob-inbox');
+    removeAllPulseClasses('eve-observations');
 
     const gpMessage = `<p class="gp-message pulse">From Alice: Hey Bob, let's use g = ${g} and p = ${p}.</p>`;
     const existingGP = document.querySelector('#bob-inbox .gp-message');
@@ -32,10 +42,14 @@ function sendToBob() {
 }
 
 function acceptGP() {
+    removeAllPulseClasses('alice-inbox');
+    removeAllPulseClasses('eve-observations');
+
     const acceptMessage = `<p class="accept-message pulse">Bob has accepted g = ${g} and p = ${p}.</p>`;
     const existingAccept = document.querySelector('#alice-inbox .accept-message');
     const existingEveGPAccept = document.querySelector('#eve-observations .eve-gp-accept');
     const eveGPAcceptMessage = `<p class="eve-gp-accept eve-pulse">Bob has accepted g = ${g}, p = ${p}</p>`;
+    
     if (existingAccept) {
         existingAccept.outerHTML = acceptMessage;
         existingEveGPAccept.outerHTML = eveGPAcceptMessage;
@@ -62,9 +76,11 @@ function acceptGP() {
     loadSavedInput();
 }
 
-
 function calculateA() {
-    a = parseInt(document.getElementById('a').value);
+    const aInput = document.getElementById('a');
+    if (!aInput) return;
+    
+    a = parseInt(aInput.value);
     if (isNaN(a) || a >= p) {
         alert("Please enter a valid integer for Alice's exponent.\nRemember, a must be less than p.");
         return;
@@ -93,7 +109,10 @@ function calculateA() {
 }
 
 function calculateB() {
-    b = parseInt(document.getElementById('b').value);
+    const bInput = document.getElementById('b');
+    if (!bInput) return;
+    
+    b = parseInt(bInput.value);
     if (isNaN(b) || b >= p) {
         alert("Please enter a valid integer for Bob's exponent.\nRemember, b must be less than p.");
         return;
@@ -101,11 +120,11 @@ function calculateB() {
     B = Math.pow(g, b) % p;
 
     const choiceMessage = `
-                            <p class="bob-choice">
-                                You chose exponent b = ${b}.<br>
-                                B = g<sup>b</sup> % p, therefore<br>
-                                B = ${g}<sup>${b}</sup> % ${p} = ${B}
-                            </p>`;
+        <p class="bob-choice">
+            You chose exponent b = ${b}.<br>
+            B = g<sup>b</sup> % p, therefore<br>
+            B = ${g}<sup>${b}</sup> % ${p} = ${B}
+        </p>`;
     const existingChoice = document.querySelector('#bob-content .bob-choice');
     if (existingChoice) {
         existingChoice.outerHTML = choiceMessage;
@@ -122,6 +141,9 @@ function calculateB() {
 }
 
 function sendAToBob() {
+    removeAllPulseClasses('bob-inbox');
+    removeAllPulseClasses('eve-observations');
+
     const aMessage = `<p class="a-message pulse">From Alice: Here is my A = ${A}.</p>`;
     const existingA = document.querySelector('#bob-inbox .a-message');
     if (existingA) {
@@ -148,7 +170,10 @@ function sendAToBob() {
 }
 
 function sendBToAlice() {
-    const bMessage = `<p class="b-message pulse" >From Bob: Here is my B = ${B}.</p>`;
+    removeAllPulseClasses('alice-inbox');
+    removeAllPulseClasses('eve-observations');
+
+    const bMessage = `<p class="b-message pulse">From Bob: Here is my B = ${B}.</p>`;
     const existingB = document.querySelector('#alice-inbox .b-message');
     if (existingB) {
         existingB.outerHTML = bMessage;
@@ -186,7 +211,6 @@ function calculateBobSecret() {
     document.getElementById('bob-secret').innerText = "Waiting for Alice to calculate...";
     checkKeysMatch();
 }
-
 let sharedSecret = null;
 
 function checkKeysMatch() {
@@ -265,7 +289,6 @@ function restoreModalContent() {
     openModal(matchMessage, keysMatch);
 }
 
-
 async function transformSharedKey() {
     if (!sharedSecret) {
         console.error("No shared secret available");
@@ -316,14 +339,26 @@ async function transformSharedKey() {
         `;
     } catch (error) {
         console.error("Error:", error);
-        alert(`Failed to transform shared key to AES: ${error.message}`);
+        const modalBody = document.getElementById('modal-body');
+        modalBody.innerHTML = `
+            <div class="error-message">
+                <h3>Error Generating AES Key</h3>
+                <p>There was an error generating the AES key: ${error.message}</p>
+                <p>Please try again later.</p>
+            </div>
+            <button class="back-button" onclick="restoreModalContent()">Back</button>
+        `;
     }
 }
 
-
 function loadSavedInput() {
-    document.getElementById("g").value = g;
-    document.getElementById("p").value = p;
-    document.getElementById("a").value = a;
-    document.getElementById("b").value = b;
+    const gInput = document.getElementById("g");
+    const pInput = document.getElementById("p");
+    const aInput = document.getElementById("a");
+    const bInput = document.getElementById("b");
+    
+    if (gInput) gInput.value = g || '';
+    if (pInput) pInput.value = p || '';
+    if (aInput) aInput.value = a || '';
+    if (bInput) bInput.value = b || '';
 }
