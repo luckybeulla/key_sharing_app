@@ -236,18 +236,18 @@ function showRecap() {
             <ul>
                 <li>Both Alice and Bob agree on two public large integers: a <em>prime number</em> p and a <em>base</em> g.</li>
                 
-                <li>Each party generates a <strong>private key</strong>. Alice's private key is a, and Bob's private key is b.</li>
+                <li>Each party generates a <strong>secret number</strong>. Alice's secret number is "a", and Bob's number is "b".</li>
                 
-                <li>Using their private keys, each party generates a <strong>public key</strong>:
+                <li>Using their secret numbers, each party generates a <strong>public number</strong>:
                     <ul>
-                        <li>Alice computes her public key as A = g<sup>a</sup> mod p</li>
-                        <li>Bob computes his public key as B = g<sup>b</sup> mod p</li>
+                        <li>Alice computes her public number as A = g<sup>a</sup> mod p</li>
+                        <li>Bob computes his public number as B = g<sup>b</sup> mod p</li>
                     </ul>
                 </li>
                 
-                <li>They exchange their public keys A and B</li>
+                <li>They exchange their public numbers A and B</li>
                 
-                <li>Each party then uses their own private key and the other party's public key to calculate the same <strong>shared secret</strong>:
+                <li>Each party then uses their own secret number and the other party's public number to calculate the same <strong>shared secret</strong>:
                     <ul>
                         <li>Alice computes s = B<sup>a</sup> mod p</li>
                         <li>Bob computes s = A<sup>b</sup> mod p</li>
