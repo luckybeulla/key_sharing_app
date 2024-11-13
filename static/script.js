@@ -1,6 +1,7 @@
 // script.js
 let g, p, a, b, A, B, aliceSecret, bobSecret;
 let aliceReady = false, bobReady = false;
+let sharedSecret = null;
 
 function sendToBob() {
     g = parseInt(document.getElementById('g').value);
@@ -192,12 +193,10 @@ function calculateBobSecret() {
     checkKeysMatch();
 }
 
-let sharedSecret = null;
-
 function checkKeysMatch() {
     if (aliceReady && bobReady) {
         const keysMatch = aliceSecret === bobSecret;
-        sharedSecret = aliceSecret; 
+        sharedSecret = Number(aliceSecret); 
         
         const matchMessage = keysMatch
             ? "Shared secret keys match!"
