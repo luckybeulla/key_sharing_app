@@ -107,11 +107,11 @@ function calculateB() {
     B = (BigInt(g)**BigInt(b)) % BigInt(p);
 
     const choiceMessage = `
-                            <p class="bob-choice">
-                                You chose exponent b = ${b}.<br>
-                                B = g<sup>b</sup> % p, therefore<br>
-                                B = ${g}<sup>${b}</sup> % ${p} = ${B}
-                            </p>`;
+        <p class="bob-choice">
+            You chose exponent b = ${b}.<br>
+            B = g<sup>b</sup> % p, therefore<br>
+            B = ${g}<sup>${b}</sup> % ${p} = ${B}
+        </p>`;
     const existingChoice = document.querySelector('#bob-content .bob-choice');
     if (existingChoice) {
         existingChoice.outerHTML = choiceMessage;
