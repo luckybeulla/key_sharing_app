@@ -49,7 +49,12 @@ pip install flask pycryptodome
 
 * Lots of keys do not match - for example, when Alice and Bob do not click CalculateSharedKey at the same time, keys do not match - make the order of steps clear, maybe the animation on buttons too?
 
-* 
+* Pulse animation on buttons and latest messages
+
+* Recap button on the homepage
+
+* Restrict p to only prime numbers, add a cap for g, p, a and b
+
 
 
 
