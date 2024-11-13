@@ -76,16 +76,27 @@ function acceptGP() {
     loadSavedInput();
 }
 
+function modPow(base, exponent, modulus) {
+    if (modulus === 1) return 0;
+    let result = 1;
+    base = base % modulus;
+    while (exponent > 0) {
+        if (exponent % 2 === 1) {
+            result = (result * base) % modulus;
+        }
+        base = (base * base) % modulus;
+        exponent = Math.floor(exponent / 2);
+    }
+    return result;
+}
+
 function calculateA() {
-    // const aInput = document.getElementById('a');
-    // if (!aInput) return;
-    
     a = parseInt(document.getElementById('a').value);
     if (isNaN(a) || a >= p) {
         alert("Please enter a valid integer for Alice's exponent.\nRemember, a must be less than p.");
         return;
     }
-    A = Math.pow(g, a) % p;
+    A = modPow(g, a, p);
     
     const choiceMessage = `
         <p class="alice-choice">
@@ -109,15 +120,12 @@ function calculateA() {
 }
 
 function calculateB() {
-    // const bInput = document.getElementById('b');
-    // if (!bInput) return;
-    
     b = parseInt(document.getElementById('b').value);
     if (isNaN(b) || b >= p) {
         alert("Please enter a valid integer for Bob's exponent.\nRemember, b must be less than p.");
         return;
     }
-    B = Math.pow(g, b) % p;
+    B = modPow(g, b, p);
 
     const choiceMessage = `
         <p class="bob-choice">
@@ -199,14 +207,14 @@ function sendBToAlice() {
 }
 
 function calculateAliceSecret() {
-    aliceSecret = Math.pow(B, a) % p;
+    aliceSecret = modPow(B, a, p);
     aliceReady = true;
     document.getElementById('alice-secret').innerText = "Waiting for Bob to calculate...";
     checkKeysMatch();
 }
 
 function calculateBobSecret() {
-    bobSecret = Math.pow(A, b) % p;
+    bobSecret = modPow(A, b, p);
     bobReady = true;
     document.getElementById('bob-secret').innerText = "Waiting for Alice to calculate...";
     checkKeysMatch();
@@ -357,9 +365,4 @@ function loadSavedInput() {
     document.getElementById("p").value = p;
     document.getElementById("a").value = a;
     document.getElementById("b").value = b;
-    
-    // if (gInput) gInput.value = g || '';
-    // if (pInput) pInput.value = p || '';
-    // if (aInput) aInput.value = a || '';
-    // if (bInput) bInput.value = b || '';
 }
