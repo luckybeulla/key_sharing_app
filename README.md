@@ -35,9 +35,11 @@ pip install flask pycryptodome
 
 ## Demo
 
-<div style="position: relative; padding-bottom: 56.25%; height: 0;"><iframe src="https://www.loom.com/embed/14d0db3de48d4927a9337b059371e71c?sid=9c122465-0fcb-46c3-bc01-8203599e7879" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe></div>
-
-
+<div>
+    <a href="https://www.loom.com/share/14d0db3de48d4927a9337b059371e71c">
+      <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/14d0db3de48d4927a9337b059371e71c-7d06e36598f99ffc-full-play.gif">
+    </a>
+</div>
 
 
 
