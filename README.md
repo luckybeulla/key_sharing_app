@@ -35,25 +35,6 @@ pip install flask pycryptodome
 
 [PyCryptodome 3.220b0 documentation](https://www.pycryptodome.org/src/examples#encrypt-data-with-aes)
 
-****
-
-# To be deleted
-
-### Current bugs in the code ###
-
-* AES key algorithm can not generate a key from 0 so when the user choses number that leads to the secret key being 0, the AES key generation button will not work
-
-* The backend code in script.js doing the Diffie-Hellman calculations does not handle large integers so when Alice chooses big numbers, the returned values are NaN
-
-* p must be a prime number
-
-* Lots of keys do not match - for example, when Alice and Bob do not click CalculateSharedKey at the same time, keys do not match - make the order of steps clear, maybe the animation on buttons too?
-
-* Pulse animation on buttons and latest messages
-
-* Recap button on the homepage
-
-* Restrict p to only prime numbers, add a cap for g, p, a and b
 
 
 
