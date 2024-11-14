@@ -39,6 +39,9 @@ pip install flask pycryptodome
     <a href="https://www.loom.com/share/14d0db3de48d4927a9337b059371e71c">
       <img style="max-width:300px;" src="https://cdn.loom.com/sessions/thumbnails/14d0db3de48d4927a9337b059371e71c-7d06e36598f99ffc-full-play.gif">
     </a>
+    <a href="https://www.loom.com/share/14d0db3de48d4927a9337b059371e71c">
+      <p>Diffie-Hellman interactive app - Watch Video</p>
+    </a>
 </div>
 
 
