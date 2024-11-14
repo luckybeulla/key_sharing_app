@@ -32,7 +32,7 @@ h1 {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     min-height: 600px;
-    font-family: "Lucida Console", "Courier New", monospace;;
+    font-family: "Lucida Console", "Courier New", monospace;
 }
 
 .svg-container {
@@ -227,6 +227,12 @@ button:hover {
     margin-top: 20px;
 }
 
+#modal-message {
+    font-family: "Lucida Console", "Courier New", monospace;
+    text-align: center;
+    margin-top: 30px;
+}
+
 .close-button {
     position: absolute;
     top: 10px;
@@ -254,6 +260,7 @@ button:hover {
     background-color: #f8f9fa;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    font-family: serif;
 }
 
 .aes-key-explanation h3 {
