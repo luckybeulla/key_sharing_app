@@ -243,10 +243,11 @@ function openModal(message, keysMatch = false) {
     const modalBody = document.getElementById('modal-body');
     modalBody.innerHTML = `
         <p id="modal-message">${message}</p>
+        ${keysMatch ? `
         <div class="modal-buttons">
-            <button id="recapButton" onclick="showRecap()">Recap</button>
-            ${keysMatch ? `<button class="transform-button" onclick="transformSharedKey()">Generate AES key</button>` : ''}
+            <button class="transform-button" onclick="transformSharedKey()">Generate AES key</button>
         </div>
+        ` : ''}
     `;
 
     document.getElementById('resultModal').style.display = 'block';
@@ -256,12 +257,12 @@ function closeModal() {
     document.getElementById('resultModal').style.display = 'none';
     document.getElementById('modal-body').innerHTML = `
         <p id="modal-message"></p>
-        <button id="recapButton" onclick="showRecap()">Recap</button>
     `;
 }
 
 function showRecap() {
-    document.getElementById('modal-body').innerHTML = `
+    const modalBody = document.getElementById('modal-body');
+    modalBody.innerHTML = `
         <div class="diffie-hellman-explanation">
             <h3>Diffie-Hellman Key Exchange Recap</h3>  
             <p>Diffie-Hellman (DH) is a way for two parties (we called them Alice and Bob) to create a shared secret key over an insecure network.</p>
@@ -290,8 +291,9 @@ function showRecap() {
             
             <p>This shared secret <strong>s</strong> will be the same for both Alice and Bob, thanks to mathematical properties of modular exponentiation.</p>
         </div>
-        <button class="back-button" onclick="restoreModalContent()">Back</button>
     `;
+    
+    document.getElementById('resultModal').style.display = 'block';
 }
 
 function restoreModalContent() {
