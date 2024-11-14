@@ -37,7 +37,7 @@ function sendToBob() {
         `;
     }
 
-    const eveGPMessage = `<p class="eve-gp pulse">Alice sends Bob g = ${g}, p = ${p}</p>`;
+    const eveGPMessage = `<p class="eve-gp eve-pulse">Alice sends Bob g = ${g}, p = ${p}</p>`;
     const existingEveGP = document.querySelector('#eve-observations .eve-gp');
     if (existingEveGP) {
         existingEveGP.outerHTML = eveGPMessage;
