@@ -82,20 +82,6 @@ function acceptGP() {
     loadSavedInput();
 }
 
-function modPow(base, exponent, modulus) {
-    if (modulus === 1) return 0;
-    let result = 1;
-    base = base % modulus;
-    while (exponent > 0) {
-        if (exponent % 2 === 1) {
-            result = (result * base) % modulus;
-        }
-        base = (base * base) % modulus;
-        exponent = Math.floor(exponent / 2);
-    }
-    return result;
-}
-
 function calculateA() {
     a = parseInt(document.getElementById('a').value);
     if (isNaN(a) || a >= p) {
@@ -290,6 +276,9 @@ function showRecap() {
             </ul>
             
             <p>This shared secret <strong>s</strong> will be the same for both Alice and Bob, thanks to mathematical properties of modular exponentiation.</p>
+            <p class="note">Even if eavesdropper, Eve, observes the communication and sees the values of the public numbers <em>A = g<sup>a</sup> mod p</em> and <em>B = g<sup>b</sup> mod p</em>, she still cannot calculate the shared secret <em>s</em> without knowing the private numbers <em>a</em> and <em>b</em>. This is because of the difficulty of the <strong>discrete logarithm problem</strong>.</p>
+            <p class="note">In the Diffie-Hellman key exchange, while it is easy to compute <em>A</em> and <em>B</em> from <em>a</em> and <em>b</em> using modular exponentiation, it is extremely hard (for sufficiently large values of <em>p</em>) to reverse this process — that is, to calculate <em>a</em> from <em>A = g<sup>a</sup> mod p</em> or <em>b</em> from <em>B = g<sup>b</sup> mod p</em>. 
+            Without access to either <em>a</em> or <em>b</em>, Eve has no way of obtaining the shared secret <em>s = g<sup>ab</sup> mod p</em>.</p>
         </div>
     `;
     
