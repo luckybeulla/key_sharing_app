@@ -15,7 +15,7 @@ When Alice and Bob obtain secret keys that match at the end, a recap of the key 
 ## Features
 
 - **Step-by-step Diffie-Hellman key exchange**: Users are guided through each step to understand and complete a Diffie-Hellman key exchange.
-- **Eavesdropper (Eve) view**: Display what Eve observes as the communication takes place to show which elements of the exchange are public.
+- **Eavesdropper's (Eve) view**: Display what Eve observes as the communication takes place to show which elements of the exchange are public.
 - **AES key conversion**: An option to convert the shared key into an AES key and learn about AES encryption.
 
 ## Technology Stack
