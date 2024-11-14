@@ -7,19 +7,19 @@ body {
 }
 
 .header {
-    background-color: #461220;
-    height: 10px;
-    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 2rem;
+    gap: 20px;
 }
 
-.header-icon {
-    height: 40px;
-    margin-right: 10px;
+#headerRecapButton{
+    width: 100px;
 }
 
 h1 {
     text-align: center;
-    margin-bottom: 40px;
 }
 
 .participant {
